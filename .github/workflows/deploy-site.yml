@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout site repository
-      - name: Checkout - site
+      - name: "Checkout: site"
         uses: actions/checkout@v3
           
       # Checkout actions repository
@@ -19,6 +19,16 @@ jobs:
           path: ./.github/actions
           repository: coldandgoji/actions
           token: ${{ secrets.WEBHOOK_TOKEN }}
+
+      # Update status: clone
+      - name: Update status - clone
+        uses: ./.github/actions/site-update-status
+        with:
+          BUILD_STATUS: clone
+          ORGANIZATION_ID: ${{ secrets.ORGANIZATION_ID }}
+          SITE_ID: ${{ secrets.SITE_ID }}
+          WEBHOOK_STATUS_URL: ${{ secrets.WEBHOOK_STATUS_URL }}
+          WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
 
       # Update status: clone
       - name: Update status - clone
