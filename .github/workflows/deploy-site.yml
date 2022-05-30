@@ -53,8 +53,8 @@ jobs:
           WEBHOOK_STATUS_URL: ${{ secrets.WEBHOOK_STATUS_URL }}
           WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
 
-      - name: "Deploy: Site v2"
-        uses: ./.github/actions/site-deploy@main
+      - name: "Deploy: Site v3"
+        uses: ./.github/actions/site-deploy
         with:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
 
