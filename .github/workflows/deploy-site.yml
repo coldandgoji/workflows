@@ -8,20 +8,17 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      # Checkout site repository
       - name: "Checkout: site"
         uses: actions/checkout@v3
           
-      # Checkout actions repository
-      - name: Checkout - actions
+      - name: "Checkout: coldandgoji/actions"
         uses: actions/checkout@v3
         with:
           path: ./.github/actions
           repository: coldandgoji/actions
           token: ${{ secrets.WEBHOOK_TOKEN }}
 
-      # Update status: clone
-      - name: Update status - clone
+      - name: "Status: Clone"
         uses: ./.github/actions/site-update-status
         with:
           BUILD_STATUS: clone
@@ -30,11 +27,28 @@ jobs:
           WEBHOOK_STATUS_URL: ${{ secrets.WEBHOOK_STATUS_URL }}
           WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
 
-      # Update status: clone
-      - name: Update status - clone
+      - name: "Status: Build"
         uses: ./.github/actions/site-update-status
         with:
-          BUILD_STATUS: clone
+          BUILD_STATUS: build
+          ORGANIZATION_ID: ${{ secrets.ORGANIZATION_ID }}
+          SITE_ID: ${{ secrets.SITE_ID }}
+          WEBHOOK_STATUS_URL: ${{ secrets.WEBHOOK_STATUS_URL }}
+          WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
+
+      - name: "Status: Deploy"
+        uses: ./.github/actions/site-update-status
+        with:
+          BUILD_STATUS: deploy
+          ORGANIZATION_ID: ${{ secrets.ORGANIZATION_ID }}
+          SITE_ID: ${{ secrets.SITE_ID }}
+          WEBHOOK_STATUS_URL: ${{ secrets.WEBHOOK_STATUS_URL }}
+          WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
+
+      - name: "Status: Complete"
+        uses: ./.github/actions/site-update-status
+        with:
+          BUILD_STATUS: complete
           ORGANIZATION_ID: ${{ secrets.ORGANIZATION_ID }}
           SITE_ID: ${{ secrets.SITE_ID }}
           WEBHOOK_STATUS_URL: ${{ secrets.WEBHOOK_STATUS_URL }}
