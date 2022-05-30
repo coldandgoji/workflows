@@ -1,5 +1,4 @@
 name: Deploy Site
-description: Builds and deploys the site to Firebase Hosting
 
 on:
   workflow_call:
