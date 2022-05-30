@@ -1,0 +1,31 @@
+name: Deploy Site
+description: Builds and deploys the site to Firebase Hosting
+inputs:
+  ORGANIZATION_ID:
+    required: true
+  SITE_ID:
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Curl test...
+      run: |
+        curl \
+          -H "Content-Type: application/json" \
+          -H "CG-Organization: $ORGANIZATION_ID" \
+          -H "CG-Instance: $SITE_ID" \
+          -H "X-PAT: $WEBHOOK_TOKEN" \
+          -d '{ "data": { "status": "clone" } }' \
+          -X POST "$WEBHOOK_STATUS_URL"
+      env:
+        ORGANIZATION_ID: ${{ inputs.ORGANIZATION_ID }}
+        SITE_ID: ${{ inputs.SITE_ID }}
+        WEBHOOK_STATUS_URL: ${{ secrets.WEBHOOK_STATUS_URL }}
+        WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
+
+    - name: GitHub Action for Firebase
+      uses: w9jds/firebase-action@v2.1.2
+      with:
+        args: projects:list
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
