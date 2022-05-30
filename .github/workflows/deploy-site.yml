@@ -5,7 +5,7 @@ on:
 
 jobs:
   Deploy:
-    name: This is a new name
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
       # Checkout site repository
