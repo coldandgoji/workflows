@@ -22,9 +22,9 @@ jobs:
           WEBHOOK_STATUS_URL: ${{ secrets.WEBHOOK_STATUS_URL }}
           WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
 
-       - name: GitHub Action for Firebase
-         uses: w9jds/firebase-action@v2.1.2
-         with:
-           args: projects:list
-         env:
-           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: GitHub Action for Firebase
+        uses: w9jds/firebase-action@v2.1.2
+        with:
+          args: projects:list
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
