@@ -8,7 +8,7 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout: site"
+      - name: "Checkout: repository"
         uses: actions/checkout@v3
           
       - name: "Checkout: coldandgoji/actions"
@@ -18,14 +18,19 @@ jobs:
           repository: coldandgoji/actions
           token: ${{ secrets.WEBHOOK_TOKEN }}
 
-      - name: "Status: Clone"
+      - name: "Status: Prepare"
         uses: ./.github/actions/site-update-status
         with:
-          BUILD_STATUS: clone
+          BUILD_STATUS: prepare
           ORGANIZATION_ID: ${{ secrets.ORGANIZATION_ID }}
           SITE_ID: ${{ secrets.SITE_ID }}
           WEBHOOK_STATUS_URL: ${{ secrets.WEBHOOK_STATUS_URL }}
           WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
+
+      - name: "Install Dependencies"
+        uses: ./.github/actions/site-install-dependencies
+        with:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: "Status: Build"
         uses: ./.github/actions/site-update-status
@@ -36,6 +41,8 @@ jobs:
           WEBHOOK_STATUS_URL: ${{ secrets.WEBHOOK_STATUS_URL }}
           WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
 
+      # Build site
+
       - name: "Status: Deploy"
         uses: ./.github/actions/site-update-status
         with:
@@ -44,6 +51,8 @@ jobs:
           SITE_ID: ${{ secrets.SITE_ID }}
           WEBHOOK_STATUS_URL: ${{ secrets.WEBHOOK_STATUS_URL }}
           WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
+
+      # Deploy
 
       - name: "Status: Complete"
         uses: ./.github/actions/site-update-status
