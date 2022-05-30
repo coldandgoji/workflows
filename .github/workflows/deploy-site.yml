@@ -11,24 +11,42 @@ jobs:
       - name: Checkout repository...
         uses: actions/checkout@v3
 
-      - name: Curl test...
-        run: |
-          curl \
-            -H "Content-Type: application/json" \
-            -H "CG-Organization: $ORGANIZATION_ID" \
-            -H "CG-Instance: $SITE_ID" \
-            -H "X-PAT: $WEBHOOK_TOKEN" \
-            -d '{ "data": { "status": "clone" } }' \
-            -X POST "$WEBHOOK_STATUS_URL"
-        env:
+      # - name: Curl test...
+      #   run: |
+      #     curl \
+      #       -H "Content-Type: application/json" \
+      #       -H "CG-Organization: $ORGANIZATION_ID" \
+      #       -H "CG-Instance: $SITE_ID" \
+      #       -H "X-PAT: $WEBHOOK_TOKEN" \
+      #       -d '{ "data": { "status": "clone" } }' \
+      #       -X POST "$WEBHOOK_STATUS_URL"
+      #   env:
+      #     ORGANIZATION_ID: ${{ secrets.ORGANIZATION_ID }}
+      #     SITE_ID: ${{ secrets.SITE_ID }}
+      #     WEBHOOK_STATUS_URL: ${{ secrets.WEBHOOK_STATUS_URL }}
+      #     WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
+
+      # - name: GitHub Action for Firebase
+      #   uses: w9jds/firebase-action@v2.1.2
+      #   with:
+      #     args: projects:list
+      #   env:
+      #     FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+
+      #Checkout actions repository
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          path: ./.github/actions
+          repository: coldandgoji/actions
+          token: ${{ secrets.WEBHOOK_TOKEN }}
+
+      - name: Run my action
+        uses: ./.github/actions/deploy-site
+        with:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           ORGANIZATION_ID: ${{ secrets.ORGANIZATION_ID }}
           SITE_ID: ${{ secrets.SITE_ID }}
           WEBHOOK_STATUS_URL: ${{ secrets.WEBHOOK_STATUS_URL }}
           WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
-
-      - name: GitHub Action for Firebase
-        uses: w9jds/firebase-action@v2.1.2
-        with:
-          args: projects:list
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
