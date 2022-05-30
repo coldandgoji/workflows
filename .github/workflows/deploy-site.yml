@@ -41,7 +41,8 @@ jobs:
           WEBHOOK_STATUS_URL: ${{ secrets.WEBHOOK_STATUS_URL }}
           WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
 
-      # Build site
+      - name: "Build: Site"
+        uses: ./.github/actions/site-build
 
       - name: "Status: Deploy"
         uses: ./.github/actions/site-update-status
@@ -52,7 +53,10 @@ jobs:
           WEBHOOK_STATUS_URL: ${{ secrets.WEBHOOK_STATUS_URL }}
           WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
 
-      # Deploy
+      - name: "Deploy: Site"
+        uses: ./.github/actions/site-deploy
+        with:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
       - name: "Status: Complete"
         uses: ./.github/actions/site-update-status
